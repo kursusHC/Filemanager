@@ -73,7 +73,7 @@ for (var i = abbreviation.length; i > 0; i--) {
        }
 
        // XXX maybe not port this heuristic
-       // 
+       //
        //          } else if ([[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[self characterAtIndex:matchedRange.location]]) {
        //            for (j = matchedRange.location-1; j >= (int) searchRange.location; j--) {
        //              if ([[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[self characterAtIndex:j]])
@@ -102,7 +102,7 @@ jQuery.fn.liveUpdate = function(list){
 	list = jQuery(list);
 
 	// console.log(list);
-	
+
 	if ( list.length ) {
 		// console.log(this);
 		var rows = list.find('li > a'),
@@ -110,7 +110,7 @@ jQuery.fn.liveUpdate = function(list){
 				// console.log(this.innerHTML.toLowerCase());
 				return this.innerHTML.toLowerCase();
 			});
-			
+
 		this
 			.keyup(filter).keyup()
 			.parents('form').submit(function(){
@@ -118,16 +118,16 @@ jQuery.fn.liveUpdate = function(list){
 			});
 
 	}
-		
+
 	return this;
-		
+
 	function filter(){
 		var term = jQuery.trim( jQuery(this).val().toLowerCase() ), scores = [];
-		
-		// we replace  space char with nothing since the score understand it	
+
+		// we replace  space char with nothing since the score understand it
 		term = term.split(' ').join('');
 		// console.log(term);
-		
+
 		if ( !term ) {
 			rows.show();
 			// update main window
@@ -138,28 +138,28 @@ jQuery.fn.liveUpdate = function(list){
 			// update main window
 			jQuery('#fileinfo ul#contents li').hide();
 			jQuery('#fileinfo table#contents td').parent().hide();
-			
+
 
 			cache.each(function(i){
 				var score = this.score(term);
 				if (score > 0) { scores.push([score, i]); }
 			});
-			
-			
+
+
 			jQuery.each(scores.sort(function(a, b){return b[0] - a[0];}), function(){
 				jQuery(rows[ this[1] ]).show();
-				
+
 			});
-			
+
 			// update main window
 			jQuery('#filetree ul').find('li > a').each(function() {
-				
-				var rel = $(this).attr('rel');
+
+				var rel = $(this).attr('data-path');
 				// console.log(rel);
-				
+
 				if($(this).css('display')!='none') {
-					jQuery('#fileinfo ul#contents li[title="'+rel+'"]').show();
-					jQuery('#fileinfo table#contents td[title="'+rel+'"]').parent().show();
+					jQuery('#fileinfo ul#contents li[data-path="'+rel+'"]').show();
+					jQuery('#fileinfo table#contents td[data-path="'+rel+'"]').parent().show();
 				}
 			});
 			// update main window
@@ -168,7 +168,7 @@ jQuery.fn.liveUpdate = function(list){
 };
 
 $(document).ready(function() {
-	
+
 		// remove default label on focus
 		$("#q").focus(function() {
 			$("#search span.q-inactive").css('display', 'none');
@@ -178,7 +178,7 @@ $(document).ready(function() {
 			$(this).css('display', 'none');
 			$("#q").focus();
 		});
-		
+
 		// display default label if val == ""
 		// if not, display reset button
 		$("#q").bind('blur keyup', function() {
@@ -189,21 +189,21 @@ $(document).ready(function() {
 				$("#search a.q-reset").css('display', 'inline-table');
 			}
 		});
-		
-		
-		
+
+
+
 		// handle reset action
 		$("#search a.q-reset").click(function() {
 			$("#q").val('');
 			$('#q').liveUpdate('#filetree ul').blur();
 			return false;
 		});
-		
+
 		// disable search form submit
 		$('#search').submit(function(){
 			return false;
 		});
-		
+
 		// field init
 		$('#q').blur();
 });
